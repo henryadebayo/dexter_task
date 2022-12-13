@@ -1,6 +1,7 @@
 import 'package:dexter_task/src/core/app/router/app_router.dart';
 import 'package:dexter_task/src/ui/auth/bloc/auth_bloc/signIn_bloc/sign_in_bloc_bloc.dart';
 import 'package:dexter_task/src/ui/auth/bloc/auth_bloc/signUp_bloc/signup_bloc_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   runApp(
     const MyApp(),

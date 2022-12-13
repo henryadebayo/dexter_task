@@ -1,6 +1,7 @@
 // import 'dart:async';
 //
 // import 'package:equatable/equatable.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 //
 // import '../../../data/repository/user_repository/interface.dart';
@@ -8,7 +9,6 @@
 // import '../../locator/app_locator.dart';
 //
 // part 'user_event.dart';
-//
 // part 'user_state.dart';
 //
 // class UserBloc extends Bloc<UserEvent, UserState> {

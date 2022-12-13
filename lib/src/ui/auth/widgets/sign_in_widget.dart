@@ -1,23 +1,29 @@
 import 'package:dexter_task/src/ui/auth/widgets/sign_up_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app/theme/colors.dart';
+import '../bloc/auth_bloc/signIn_bloc/sign_in_bloc_bloc.dart';
 import '../sign_up/sign_up.dart';
 import 'customTextButton.dart';
 import 'formField.dart';
 
 class SignInWidget extends StatelessWidget {
-  const SignInWidget({
+  SignInWidget({
     Key? key,
     required GlobalKey<FormState> formKey,
     this.newUser,
+    this.email,
+    this.password,
   })  : _formKey = formKey,
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
   final User? newUser;
+  String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +54,12 @@ class SignInWidget extends StatelessWidget {
                         height: 20.0.h,
                       ),
                       CustomTextForm(
-                        keyboardType: TextInputType.number,
-                        formatter: [LengthLimitingTextInputFormatter(11)],
+                        keyboardType: TextInputType.emailAddress,
+                        formatter: [LengthLimitingTextInputFormatter(28)],
                         label: "Input email address",
                         autoFill: AutofillHints.email,
                         onChanged: (value) {
-                          newUser?.phoneNumber = value;
+                          email = value;
                         },
                         validator: (value) {
                           if (value.isEmpty) {
@@ -71,11 +77,11 @@ class SignInWidget extends StatelessWidget {
                       CustomTextForm(
                         label: "Password",
                         formatter: [
-                          LengthLimitingTextInputFormatter(18),
+                          LengthLimitingTextInputFormatter(25),
                         ],
                         autoFill: AutofillHints.password,
                         onChanged: (value) {
-                          newUser?.password = value;
+                          password = value;
                         },
                         validator: (value) {
                           if (value.isEmpty
@@ -96,10 +102,12 @@ class SignInWidget extends StatelessWidget {
               CustomTextButton(
                 onSubmit: () {
                   if (_formKey.currentState!.validate()) {
-                    // context.read<SignInBloc>().add(SignIn(
-                    //     phoneNumber: newUser?.phoneNumber,
-                    //     password: newUser?.password!),
-                    //  );
+                    print(password);
+                    context.read<SignInBloc>().add(
+                          SignIn(
+                              password: password!.toString().trim(),
+                              email: email!.toString().trim()),
+                        );
                   }
                 },
                 label: "Sign In",

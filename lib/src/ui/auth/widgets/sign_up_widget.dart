@@ -10,7 +10,7 @@ import 'customTextButton.dart';
 import 'formField.dart';
 
 class SignUpWidget extends StatelessWidget {
-  const SignUpWidget({
+  SignUpWidget({
     Key? key,
     required GlobalKey<FormState> formKey,
     required this.user,
@@ -19,6 +19,8 @@ class SignUpWidget extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
   final User user;
+  String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,9 @@ class SignUpWidget extends StatelessWidget {
                     CustomTextForm(
                       label: "Email",
                       autoFill: AutofillHints.email,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        email = value;
+                      },
                       validator: (value) {
                         if (value.isEmpty
                             // ||
@@ -81,7 +85,7 @@ class SignUpWidget extends StatelessWidget {
                         label: "Password",
                         autoFill: AutofillHints.password,
                         onChanged: (value) {
-                          user.password = value;
+                          password = value;
                         },
                         validator: (value) {
                           if (value.isEmpty) {
@@ -99,8 +103,8 @@ class SignUpWidget extends StatelessWidget {
                   if (_formKey.currentState!.validate()) {
                     context.read<SignUpBloc>().add(
                           SignUp(
-                              phoneNumber: user.phoneNumber!,
-                              password: user.password!),
+                              email: email!.toString().trim(),
+                              password: password!.toString().trim()),
                         );
                   }
                 },
@@ -138,5 +142,5 @@ class SignUpWidget extends StatelessWidget {
 
 class User {
   String? password;
-  String? phoneNumber;
+  String? email;
 }

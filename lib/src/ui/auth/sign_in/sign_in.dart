@@ -1,7 +1,6 @@
 import 'package:dexter_task/src/ui/home/presentation/home_screen/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/app/theme/colors.dart';
 import '../../../core/presentation/widgets/custom_loader.dart';
@@ -47,11 +46,11 @@ class _SignInPageState extends State<SignInPage> {
       }, builder: (context, state) {
         if (state is SignInLoading) {
           return Center(
-            child: Container(
-                color: Colors.white,
-                height: 50.0.h,
-                width: 70.0.w,
-                child: Center(child: CustomLoader(label: "Creating Account"))),
+            child: Expanded(
+              child: Center(
+                child: CustomLoader(label: "Creating Account"),
+              ),
+            ),
           );
         }
         if (state is SignInSuccessful) {

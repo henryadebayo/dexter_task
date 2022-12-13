@@ -4,16 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TextInputWidget extends StatelessWidget {
   final String hintT;
   final String label;
+  final String errorMessagee;
   final TextInputType inputType;
   final int? mxLine;
   final int? mnLine;
+  final ValueChanged<String> onChanged;
 
-  const TextInputWidget(
+  TextInputWidget(
       {required this.hintT,
       required this.label,
+      required this.errorMessagee,
       required this.inputType,
       this.mnLine,
       this.mxLine,
+      required this.onChanged,
       Key? key})
       : super(key: key);
 
@@ -24,7 +28,8 @@ class TextInputWidget extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         SizedBox(
           height: 8.0.h,
@@ -51,12 +56,12 @@ class TextInputWidget extends StatelessWidget {
               hintText: hintT,
               hintStyle: TextStyle(fontSize: 14.sp),
             ),
-            onSaved: (String? lastNamee) {},
+            onChanged: onChanged,
             // ignore: missing_return
             validator: (String? lastName) {
               if (lastName!.isEmpty) {
                 String errorMessage;
-                errorMessage = "please fill in your last name";
+                errorMessage = errorMessagee;
                 return errorMessage;
               }
             }),

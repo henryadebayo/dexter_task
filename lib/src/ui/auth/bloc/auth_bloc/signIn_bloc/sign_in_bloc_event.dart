@@ -1,16 +1,22 @@
 part of 'sign_in_bloc_bloc.dart';
 
 @immutable
-abstract class SignInEvent {}
+abstract class SignInEvent extends Equatable {}
 
 class SignIn extends SignInEvent {
-  final String phoneNumber;
+  final String email;
   final String password;
 
   SignIn({
-    required this.phoneNumber,
+    required this.email,
     required this.password,
   });
+
+  @override
+  List<Object?> get props => [email, password];
 }
 
-class SignOut extends SignInEvent {}
+class SignOut extends SignInEvent {
+  @override
+  List<Object?> get props => [];
+}

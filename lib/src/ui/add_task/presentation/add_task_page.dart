@@ -1,13 +1,23 @@
-import 'package:dexter_task/src/core/app/theme/colors.dart';
-import 'package:dexter_task/src/core/utils/constants/app_textStyle.dart';
+import 'package:dexter_task/src/ui/home/task_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/presentation/widgets/textFormWidget.dart';
+import '../../auth/widgets/customTextButton.dart';
+import '../models/taskModel.dart';
 
-class AddTaskPage extends StatelessWidget {
+class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
+
+  @override
+  State<AddTaskPage> createState() => _AddTaskPageState();
+}
+
+class _AddTaskPageState extends State<AddTaskPage> {
+  final _formKey = GlobalKey<FormState>();
+  TaskServices taskServices = TaskServices();
+  String? task;
+  String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -40,31 +50,52 @@ class AddTaskPage extends StatelessWidget {
               ),
               SizedBox(height: 16.0.h),
               Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     SizedBox(height: 24.0.h),
-                    const TextInputWidget(
+                    TextInputWidget(
+                      mnLine: 1,
+                      label: "Task Title",
+                      hintT: 'Input task title',
+                      errorMessagee: "please input task title",
+                      inputType: TextInputType.text,
+                      onChanged: (value) {
+                        title = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.0.h,
+                    ),
+                    TextInputWidget(
                       mnLine: 6,
                       label: "Task",
                       hintT: 'Input task details here',
+                      errorMessagee: "please input task",
                       inputType: TextInputType.text,
+                      onChanged: (value) {
+                        task = value;
+                      },
                     ),
                     SizedBox(
                         height: MediaQuery.of(context).size.height / 3 - 20),
-                    Container(
-                      height: 70.0,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0.r),
-                          color: AppColors.Blue),
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Submit",
-                            style: AppTextStyle.whiteMedium
-                                .copyWith(fontSize: 20.0.sp),
-                          )),
-                    )
+                    CustomTextButton(
+                      onSubmit: () {
+                        final generalTask = GeneralTaskModel(
+                          task: task,
+                          title: title,
+                        );
+                        if (_formKey.currentState!.validate()) {
+                          print(task);
+                          taskServices.addTask(
+                            collectionId: "general_task",
+                            generalTaskModel: generalTask,
+                          );
+                        }
+                        print("Done");
+                      },
+                      label: "Create task",
+                    ),
                   ],
                 ),
               )

@@ -2,7 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+
+import '../../../auth_services.dart';
 
 part 'sign_in_bloc_event.dart';
 part 'sign_in_bloc_state.dart';
@@ -14,12 +18,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   FutureOr<void> _handleSignIn(SignIn event, Emitter<SignInState> emit) async {
+    _handleSignIn;
     try {
-      emit(SignInLoading());
-      final AuthServices authServices = AuthServices();
-      final user = await authServices.signIn(event.phoneNumber, event.password);
-      print("THIS IS SIGN IN BLOC MESSAGE :::::${user}");
-      emit(SignInSuccessful(message: user!.message));
+      await AuthServices()
+          .signInUser(email: event.email, password: event.password);
+    } on FirebaseAuthException catch (e) {
+      return emit(
+        SignInError(errorMsg: e.message),
+      );
     } on SocketException {
       emit(SignInError(errorMsg: "Check Internet Connection"));
     } catch (e) {
@@ -39,14 +45,15 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   FutureOr<void> _handleSignOut(
       SignOut event, Emitter<SignInState> emit) async {
     final authServices = AuthServices();
-    await authServices.signOut();
+    await authServices.signOutUser();
   }
-}
 
-class AuthServices {
-  signOut() {}
-
-  signIn(String phoneNumber, String password) {}
-
-  signUp({required String password, required String phoneNumber}) {}
+  FutureOr<void> _handleSignedIn() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return emit(SignInSuccessful());
+    } else {
+      return emit(SignInInitial());
+    }
+  }
 }

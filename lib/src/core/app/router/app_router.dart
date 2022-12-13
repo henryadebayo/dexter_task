@@ -33,11 +33,11 @@ class AppRouter {
         );
       case Routes.doneTaskPage:
         return MaterialPageRoute(
-          builder: (context) => const DoneTaskPage(),
+          builder: (context) => DoneTaskPage(),
         );
       case Routes.addTaskPage:
         return MaterialPageRoute(
-          builder: (context) => const AddTaskPage(),
+          builder: (context) => AddTaskPage(),
         );
       case Routes.profilePage:
         return MaterialPageRoute(
